@@ -24,6 +24,12 @@ body .wrapper-footer footer#footer-openedx {
 	max-width: 1200px;
 }
 
+.logo-proversity img,
+.logo-edx img {
+	height: 40px;
+	margin: 5px;
+}
+
 //// Register and login page
 .content-wrapper .login-register-content {
 	max-width: 1200px;
@@ -38,6 +44,15 @@ body .wrapper-footer footer#footer-openedx {
 
 .course-content .xmodule_display.xmodule_SequenceModule .sequence-nav .sequence-list-wrapper {
 	overflow: inherit;
+}
+
+.course-content .page-header.has-secondary .page-header-main {
+	display: flex;
+	justify-content: space-between;
+}
+
+.forum-nav-sort-control {
+	padding-right: 30px;
 }
 
 ///Responsive
