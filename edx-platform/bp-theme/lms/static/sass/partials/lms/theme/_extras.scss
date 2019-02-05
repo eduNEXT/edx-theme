@@ -1,0 +1,279 @@
+
+//-----------------
+// Home Styling
+//-----------------
+
+.content-wrapper.main-container {
+  margin-top: 0;
+  padding: 0;
+}
+
+.home {
+  .banner-home {
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 40vh;
+  }
+
+  .outer-wrapper {
+    float: right;
+    width: 50%;
+  }
+}
+
+//-----------------
+// Header Styling
+//-----------------
+
+.header-logo .logo-mobile {
+  display: none;
+  float: left;
+  height: 42px;
+  margin-left: -50%;
+}
+
+//-----------------
+// List courses Styling
+//-----------------
+.home .courses-container,
+.find-courses .courses-container {
+  max-width: 1300px;
+  padding: 0 15px;
+}
+
+//-----------------
+// Course Content Styling
+//-----------------
+.content-wrapper .course-tabs.navbar,
+.content-wrapper .wrapper-course-material .course-material {
+  overflow: auto;
+}
+
+.course-content .xmodule_display.xmodule_SequenceModule .sequence-nav .sequence-list-wrapper {
+  overflow: inherit;
+}
+
+//-----------------
+// Footer Styling
+//-----------------
+
+.wrapper-footer.wrapper {
+  background: #eee;
+  box-shadow: none;
+  padding: 30px;
+
+  .wrapper-logo img {
+    max-width: 100px;
+  }
+
+  footer#footer-openedx .footer-about-openedx {
+    display: flex;
+    flex-direction: column;
+    padding-top: 55px;
+  }
+
+  .nav-legal {
+    display: none;
+  }
+
+  footer#footer-openedx .colophon {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .colophon .nav-colophon {
+    margin: 5px 0 30px;
+
+    ol {
+      list-style: none;
+    }
+
+    li {
+      float: left;
+      margin-right: 15px;
+
+      a {
+        color: #333;
+      }
+    }
+  }
+
+  footer#footer-openedx {
+    display: flex;
+    justify-content: space-between;
+
+    .social-links {
+      display: flex;
+
+      a {
+        padding: 10px;
+        background: #ccc;
+        border-radius: 50%;
+        color: #333;
+        margin: 0 2px;
+
+        &:hover,
+        &:active {
+          border: 0;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .copyright {
+    color: #767676;
+    font-size: .6875em;
+    margin: -2px 0 8px;
+    text-align: left;
+  }
+}
+
+//-----------------
+// About page Styling
+//-----------------
+.content-wrapper .course-info {
+  max-width: 1170px;
+  margin: 0 auto;
+
+  .course-profile {
+    padding-top: 50px;
+  }
+
+  .waypoint {
+    font-family: UniversLTStd-Bold, Arial, Helvetica, sans-serif;
+    font-size: 3em;
+  }
+
+  ul {
+    list-style-type: none;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding: 15px 0;
+    margin: 15px 0;
+    width: 100%;
+
+    li {
+      display: inline;
+    }
+  }
+}
+
+//-----------------
+// Responsive Styling
+//-----------------
+@media only screen and (max-width: 768px) {
+  .course-content .xmodule_display.xmodule_SequenceModule .sequence-nav {
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+    margin: 0 auto;
+
+    ol {
+      flex-wrap: wrap;
+
+      li {
+        border-left-style: solid;
+        border-right-style: solid;
+      }
+    }
+
+    .sequence-list-wrapper,
+    .sequence-nav-button.button-next,
+    .sequence-nav-button.button-previous {
+      flex: 0 0 100%;
+      max-width: 100%;
+      min-height: 44px;
+      z-index: 2000;
+    }
+
+    .sequence-nav-button.button-next,
+    .sequence-nav-button.button-previous {
+      margin: .75rem 0;
+    }
+  }
+
+  .content-wrapper .course-info {
+    .course-sidebar {
+      width: 100%;
+    }
+
+    header.course-profile .intro-inner-wrapper {
+      .table {
+        align-items: center;
+        display: flex;
+        flex-direction: column-reverse;
+      }
+
+      .intro {
+        text-align: center;
+        width: 100%;
+
+        .register {
+          margin: 0 auto;
+        }
+      }
+
+      .media {
+        width: auto;
+
+        img {
+          height: 160px;
+          max-width: 264px;
+        }
+      }
+    }
+  }
+
+  //Dashboard
+  .dashboard .main-container .my-courses .course .details .wrapper-course-image {
+    display: block;
+    width: 100%;
+
+    .cover {
+      max-width: 184px;
+    }
+
+    img {
+      height: 120px;
+    }
+  }
+
+	//Footer
+  .wrapper-footer.wrapper footer#footer-openedx {
+    align-items: center;
+    flex-direction: column;
+
+    .colophon {
+      align-items: center;
+      width: 100%;
+    }
+
+    .copyright {
+      text-align: center;
+    }
+
+    .footer-about-openedx {
+      align-items: center;
+      padding-top: 30px;
+    }
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .header-logo  {
+    .logo {
+      display: none;
+    }
+
+    .logo-mobile {
+      display: block;
+    }
+  }
+
+  .home>header .outer-wrapper {
+    float: none;
+    width: auto;
+    padding: 30px 10px;
+  }
+}

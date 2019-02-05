@@ -1,0 +1,125 @@
+## mako
+<%page expression_filter="h"/>
+<%!
+  from django.urls import reverse
+  from django.utils.translation import ugettext as _
+  from branding.api import get_footer
+  from openedx.core.djangoapps.lang_pref.api import footer_language_selector_is_enabled
+  from django.conf import settings
+
+  facebook_org_link = settings.PLATFORM_FACEBOOK_ACCOUNT
+  twitter_org_link = settings.PLATFORM_TWITTER_ACCOUNT
+%>
+<% footer = get_footer(is_secure=is_secure) %>
+<%namespace name='static' file='static_content.html'/>
+
+
+<div class="wrapper wrapper-footer">
+    <footer id="footer-openedx" class="grid-container"
+      ## When rendering the footer through the branding API,
+      ## the direction may not be set on the parent element,
+      ## so we set it here.
+      % if bidi:
+        dir=${bidi}
+      % endif
+    >
+      <div class="colophon">
+        <nav class="nav-colophon" aria-label="${_('About')}">
+          <ol>
+              <li class="nav-colophon-01">
+                <a id="about" href="/about">${_('About')}</a>
+              </li>
+              <li class="nav-colophon-02">
+                <a id="contact" href="/contact">${_('Contact')}</a>
+              </li>
+          </ol>
+        </nav>
+
+        % if context.get('include_language_selector', footer_language_selector_is_enabled()):
+            <%include file="${static.get_template_path('widgets/footer-language-selector.html')}"/>
+        % endif
+
+        <div class="social-links">
+          <a href="${twitter_org_link}" target="_blank">
+            <span class="icon fa fa-twitter" aria-hidden="true"></span>
+          </a>
+          <a href="${facebook_org_link}" target="_blank">
+            <span class="icon fa fa-facebook" aria-hidden="true"></span>
+          </a>
+          <a href="http://www.youtube.com/channel/UCr5rEvayXIC0YnJxDAWuWtQ" target="_blank">
+            <span class="icon fa fa-youtube" aria-hidden="true"></span>
+          </a>
+          <a href="https://vimeo.com/usantamaria" target="_blank">
+            <span class="icon fa fa-vimeo" aria-hidden="true"></span>
+          </a>
+          <a href="http://www.flickr.com/photos/utfsm/sets/" target="_blank">
+            <span class="icon fa fa-flickr" aria-hidden="true"></span>
+          </a>
+          <a href="https://instagram.com/usantamaria/" target="_blank">
+            <span class="icon fa fa-instagram" aria-hidden="true"></span>
+          </a>
+        </div>
+
+
+        <div class="wrapper-logo">
+          <p>
+            <a href="/">
+              ## The default logo is a placeholder.
+              ## You can either replace this link entirely or update
+              ## the FOOTER_ORGANIZATION_IMAGE in Django settings.
+              ## If you customize FOOTER_ORGANIZATION_IMAGE, then the image
+              ## can be included in the footer on other sites
+              ## (e.g. a blog or marketing front-end) to provide a consistent
+              ## user experience.  See the branding app for details.
+              <img alt="organization logo" src="${static.url('images/logo-footer.png')}">
+            </a>
+          </p>
+        </div>
+
+        ## Site operators: Please do not remove this paragraph! This attributes back to edX and makes your acknowledgement of edX's trademarks clear.
+        <p class="copyright">© Universidad Técnica Federico Santa María </p>
+        <p class="copyright">Avenida España 1680, Valparaíso · +56 32 2654000 · dgc@usm.cl</p>
+
+        <nav class="nav-legal" aria-label="${_('Legal')}">
+          <ul>
+            % for item_num, link in enumerate(footer['legal_links'], start=1):
+              <li class="nav-legal-0${item_num}">
+                <a href="${link['url']}">${link['title']}</a>
+              </li>
+            % endfor
+            <li><a href="${footer['edx_org_link']['url']}">${footer['edx_org_link']['text']}</a></li>
+          </ul>
+        </nav>
+      </div>
+      ## Please leave this link and use one of the logos provided
+      ## The OpenEdX link may be hidden when this view is served
+      ## through an API to partner sites (such as marketing sites or blogs),
+      ## which are not technically powered by OpenEdX.
+      % if not hide_openedx_link:
+      <div class="footer-about-openedx">
+        <p>
+          <a href="${footer['openedx_link']['url']}">
+            <img src="${footer['openedx_link']['image']}" alt="${footer['openedx_link']['title']}" width="140" />
+          </a>
+        </p>
+        <p>
+          <a href="https://www.edunext.co">
+            <img src="https://d1uwn6yupg8lfo.cloudfront.net/edxsites/aegir-images/logo-small.png" width="140" />
+          </a>
+        </p>
+      </div>
+      % endif
+    </footer>
+</div>
+
+% if include_dependencies:
+  <%static:js group='base_vendor'/>
+  <%static:css group='style-vendor'/>
+  <%include file="widgets/segment-io.html" />
+  <%include file="widgets/segment-io-footer.html" />
+% endif
+% if footer_css_urls:
+  % for url in footer_css_urls:
+    <link rel="stylesheet" type="text/css" href="${url}"></link>
+  % endfor
+% endif
