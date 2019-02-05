@@ -1,0 +1,114 @@
+<%page expression_filter="h"/>
+<%inherit file="main.html" />
+<%namespace name='static' file='static_content.html'/>
+<%!
+from django.utils.translation import ugettext as _
+from django.urls import reverse
+
+from openedx.core.djangolib.markup import HTML, Text
+
+from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
+import third_party_auth
+from third_party_auth import provider, pipeline
+%>
+
+<main id="main" aria-label="Content" tabindex="-1">
+    <section class="home">
+      <header class ="banner-home" style="background-image: url(${static.url('images/banner-image.jpg')});">
+        <div class="outer-wrapper">
+          <div class="title">
+            <div class="heading-group">
+              % if homepage_overlay_html:
+                ${homepage_overlay_html | n, decode.utf8}
+              % else:
+                <%include file="index_overlay.html" />
+              % endif
+            </div>
+            % if settings.FEATURES.get('ENABLE_COURSE_DISCOVERY'):
+              <div class="course-search">
+                <form method="get" action="/courses">
+                  <label><span class="sr">${_("Search for a course")}</span>
+                    <input class="search-input" name="search_query" type="text" placeholder="${_("Search for a course")}"></input>
+                  </label>
+                  <button class="search-button" type="submit">
+                    <span class="icon fa fa-search" aria-hidden="true"></span><span class="sr">${_("Search")}</span>
+                  </button>
+                </form>
+              </div>
+            % endif
+
+          </div>
+
+          <%include file="index_promo_video.html" />
+
+          <div class="buttons-home">
+              % if not settings.FEATURES['DISABLE_LOGIN_BUTTON']:
+                    % if course and settings.FEATURES.get('RESTRICT_ENROLL_BY_REG_METHOD') and course.enrollment_domain:
+                        <a href="${reverse('course-specific-login', args=[course.id.to_deprecated_string()])}${login_query()}" class="btn btn-lg btn-default">${_("Sign in")}</a>
+                    % else:
+                        % if configuration_helpers.get_value('hide_login_screen', False):
+                            % if third_party_auth.is_enabled():
+
+                                <div class="form-actions form-third-party-auth">
+
+                                % for enabled in provider.Registry.displayed_for_login():
+                                    ## Translators: provider_name is the name of an external, third-party user authentication provider (like Google or LinkedIn).
+                                    <button type="submit" class="button button-primary button-${enabled.provider_id} login-${enabled.provider_id}" onclick="thirdPartySignin(event, '${pipeline_url[enabled.provider_id]}');">
+                                    % if enabled.icon_class:
+                                    <span class="icon fa ${enabled.icon_class}" aria-hidden="true"></span>
+                                    % else:
+                                    <span class="icon" aria-hidden="true"><img class="icon-image" src="${enabled.icon_image.url}" alt="${enabled.name} icon" /></span>
+                                    % endif
+                                    ${_('Sign in or Sign up')}
+                                    </button>
+                                % endfor
+
+                                </div>
+
+                            % endif
+                        % else:
+                            <a href="/login?next=dashboard" class="btn btn-lg btn-secondary">${_("Sign in")}</a>
+                        % endif
+
+                        % if True:
+                            <a href="/register" id="register" class="btn btn-lg btn-default">${_("Register")}</a>
+                        % endif
+
+                    % endif
+                % endif
+          </div>
+
+        
+        </div>
+
+      </header>
+      <%include file="${courses_list}" />
+
+    </section>
+</main>
+
+% if show_homepage_promo_video:
+  <section id="video-modal" class="modal home-page-video-modal video-modal">
+    <div class="inner-wrapper">
+      <iframe title="YouTube Video" width="640" height="360" src="//www.youtube.com/embed/${homepage_promo_video_youtube_id}?showinfo=0" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </section>
+% endif
+
+<%block name="js_extra">
+   <script type="text/javascript">
+      $(window).load(function() {
+         if(getParameterByName('next')) {
+              $('#login').trigger("click");
+         }
+      })
+   </script>
+</%block>
+
+% if show_signup_immediately is not UNDEFINED:
+  ## NOTE: This won't work in production, because anonymous views are cached, so it will
+  ## show either with or without this extra js for 3 minutes at a time.
+<script type="text/javascript">
+  $(window).load(function() {$('#signup_action').trigger("click");});
+</script>
+% endif
