@@ -18,16 +18,52 @@ h6 {
   padding: 0;
 }
 
-.home {
+.home>header {
   .banner-home {
     background-repeat: no-repeat;
     background-size: cover;
-    height: 40vh;
+    height: 70vh;
+    background-position: center;
   }
 
   .outer-wrapper {
-    float: right;
-    width: 50%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 235px;
+
+    .title {
+      background: none;
+      box-shadow: none;
+
+      .heading-group h1 {
+        color: $white;
+        font-size: 3rem;
+        text-align: center;
+      }
+    }
+
+    .buttons-home {
+      display: flex;
+      flex-direction: column;
+      align-self: center;
+
+      .btn-lg.btn-secondary {
+        background: $white;
+        color: $black;
+        border-radius: 30px;
+        margin: 10px;
+
+        &:hover {
+          background: $white!important;
+          color: $black;
+        }
+      }
+
+      .btn-lg.btn-default {
+        background: none;
+        color: $white;
+      }
+    }
   }
 }
 
@@ -35,13 +71,114 @@ h6 {
 // Header Styling
 //-----------------
 
-.header-logo .logo-mobile {
-  display: none;
-  float: left;
-  height: 42px;
-  margin-left: -50%;
+.navbar-default {
+  position: relative;
+  min-height: 50px;
+
+  .navbar-header {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    float: none;
+
+    div:last-child {
+      width: 100%;
+    }
+  }
+
+  .container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .navbar-nav {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    margin: 0;
+    height: 1px;
+    min-height: 80px;
+
+    li a img {
+      padding: 0;
+      margin: 0;
+      height: 50px
+    }
+
+    li {
+      padding: 0 15px 0 0;
+      margin: 0;
+    }
+  } 
+
+  .brand-alt-left img {
+    max-height: 33px;
+    margin-top: 12px;
+    padding-left: 20px;
+  }
+
+  .navbar-right {
+    .brand-alt-right {
+      display: none;
+    }
+
+    li {
+      color: $black;
+    }
+
+  } 
+
 }
 
+.navbar-content {
+  background: #FFE600;
+  position: fixed;
+  z-index: 9999;
+  width: 0;
+  height: 100%;
+  right: 0;
+  top: 0;
+  overflow-x: hidden;
+  z-index: 1050;
+  padding: 0;
+  transition: all 0.3s;
+  color: #323538;
+  box-shadow: inset 4px 0px 30px 1px rgba(0,0,0,0.2)
+}
+
+.navbar-toggle {
+  position: relative;
+  float: right;
+  padding: 9px 10px;
+  margin-top: 8px;
+  margin-right: 15px;
+  margin-bottom: 8px;
+  background-color: transparent;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-shadow: none;
+
+  &:hover {
+    background: none;
+    border: none !important;
+  }
+
+  .icon-bar+.icon-bar {
+    margin-top: 4px;
+  }
+
+  .icon-bar {
+    background: #323538;
+    transition: all 0.3s;
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+  }
+}
 //-----------------
 // List courses Styling
 //-----------------
@@ -49,6 +186,21 @@ h6 {
 .find-courses .courses-container {
   max-width: 1300px;
   padding: 0 15px;
+}
+
+.content-wrapper .courses-container .courses .course {
+  border:none;
+  box-shadow: none;
+  border-bottom: 3px solid $green;
+
+  .course-info .course-title {
+    color: $black;
+  }
+
+  .course-image .cover-image .learn-more {
+    background: $green;
+    border-color: $green;
+  }
 }
 
 //-----------------
@@ -67,75 +219,46 @@ h6 {
 // Footer Styling
 //-----------------
 
-.wrapper-footer.wrapper {
-  background: #eee;
-  box-shadow: none;
-  padding: 30px;
+.footer .container {
+  max-width: 1170px !important;
+  padding: 0;
 
-  .wrapper-logo img {
-    max-width: 100px;
-  }
+  .grid {
+    display: flex !important;
+    justify-content: center;
 
-  footer#footer-openedx .footer-about-openedx {
-    display: flex;
-    flex-direction: column;
-    padding-top: 55px;
-  }
+    .items {
+      display: flex;
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      min-height: 150px;
+      min-width: 15%;
+      margin: 15px;
+      padding: 15px;
 
-  .nav-legal {
-    display: none;
-  }
+      div {
+        text-align: center;
+        width: 100%;
+      }
 
-  footer#footer-openedx .colophon {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .colophon .nav-colophon {
-    margin: 5px 0 30px;
-
-    ol {
-      list-style: none;
+      ul {
+        width: 100%;
+      }
     }
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0 0 15px 0;
+    padding: 0;
 
     li {
-      float: left;
-      margin-right: 15px;
-
-      a {
-        color: #333;
-      }
+      display: inline-block;
+      padding: 0 15px 0 0;
+      color: $gray;
     }
-  }
-
-  footer#footer-openedx {
-    display: flex;
-    justify-content: space-between;
-
-    .social-links {
-      display: flex;
-
-      a {
-        padding: 10px;
-        background: #ccc;
-        border-radius: 50%;
-        color: #333;
-        margin: 0 2px;
-
-        &:hover,
-        &:active {
-          border: 0;
-          color: #fff;
-        }
-      }
-    }
-  }
-
-  .copyright {
-    color: #767676;
-    font-size: .6875em;
-    margin: -2px 0 8px;
-    text-align: left;
   }
 }
 
@@ -166,8 +289,8 @@ h6 {
 
   ul {
     list-style-type: none;
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
+    border-top: 1px solid $black;
+    border-bottom: 1px solid $black;
     padding: 15px 0;
     margin: 15px 0;
     width: 100%;
@@ -230,7 +353,7 @@ h6 {
       }
 
       p {
-        color: #909090;
+        color: $gray;
       }
 
       .teacher-image img {
@@ -382,3 +505,40 @@ h6 {
     padding: 30px 10px;
   }
 }
+
+@media (max-width: 767px){
+  .hidden-xs {
+    display: none !important;
+  }
+}
+
+
+@media (max-width: 1199px) and (min-width: 992px) {
+  .hidden-md {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-right {
+    float: right !important;
+    margin-right: -15px;
+  }
+
+  .navbar-nav>li {
+    float: left;
+  }
+}
+
+@media (max-width: 991px) and (min-width: 768px) {
+  .hidden-sm {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hidden-lg {
+    display: none !important;
+  }
+}
+

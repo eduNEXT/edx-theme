@@ -1,116 +1,180 @@
 ## mako
 <%page expression_filter="h"/>
 <%!
-  from django.urls import reverse
+  from django.core.urlresolvers import reverse
   from django.utils.translation import ugettext as _
   from branding.api import get_footer
-  from openedx.core.djangoapps.lang_pref.api import footer_language_selector_is_enabled
-  from django.conf import settings
-
-  facebook_org_link = settings.PLATFORM_FACEBOOK_ACCOUNT
-  twitter_org_link = settings.PLATFORM_TWITTER_ACCOUNT
+  from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_enabled, released_languages
+  from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 %>
 <% footer = get_footer(is_secure=is_secure) %>
 <%namespace name='static' file='static_content.html'/>
+  
+% if uses_bootstrap:
+  <div class="container-fluid wrapper-footer no-print">
+    <footer>
+      <div class="row">
+        <div class="col-md-9">
+          <nav class="navbar site-nav navbar-toggleable-sm navbar-light" aria-label="${_('About')}">
+            <ul class="navbar-nav">
+              <li><a href="" target="_blank">${_("About")}</a></li>
+              <li><a href="" target="_blank">${_("Contact")}</a></li>
+              <li><a href="${marketing_link('TOS')}" target="_blank">${_("Terms of Service")}</a></li>
+              <li><a href="${marketing_link('HONOR')}" target="_blank">${_("Honour Code")}</a></li>
+              <li><a href="${marketing_link('PRIVACY')}" target="_blank">${_("Privacy Policy")}</a></li>
+              <li><a href="${marketing_link('COOKIES')}" target="_blank">${_("Cookie Policy")}</a></li>
+            </ul>
 
+            <ul class="navbar-nav">
+              % if configuration_helpers.get_value('ENABLE_EXTEND_FOOTER_MENU', False):
+                % for menu_item in configuration_helpers.get_value('EXTENDED_MENU', []):
+                  <% display_name, url = menu_item.split(",") %>
+                  <li>
+                    <a href="${url}" target="blank">${_(display_name)}</a>
+                  </li>
+                % endfor
+              % endif
+            </ul>
 
-<div class="wrapper wrapper-footer">
-    <footer id="footer-openedx" class="grid-container"
-      ## When rendering the footer through the branding API,
-      ## the direction may not be set on the parent element,
-      ## so we set it here.
-      % if bidi:
-        dir=${bidi}
-      % endif
-    >
-      <div class="colophon">
-        <nav class="nav-colophon" aria-label="${_('About')}">
-          <ol>
-              <li class="nav-colophon-01">
-                <a id="about" href="/about">${_('About')}</a>
-              </li>
-              <li class="nav-colophon-02">
-                <a id="contact" href="/contact">${_('Contact')}</a>
-              </li>
-          </ol>
-        </nav>
-
-        % if context.get('include_language_selector', footer_language_selector_is_enabled()):
-            <%include file="${static.get_template_path('widgets/footer-language-selector.html')}"/>
-        % endif
-
-        <div class="social-links">
-          <a href="${twitter_org_link}" target="_blank">
-            <span class="icon fa fa-twitter" aria-hidden="true"></span>
-          </a>
-          <a href="${facebook_org_link}" target="_blank">
-            <span class="icon fa fa-facebook" aria-hidden="true"></span>
-          </a>
-          <a href="http://www.youtube.com/channel/UCr5rEvayXIC0YnJxDAWuWtQ" target="_blank">
-            <span class="icon fa fa-youtube" aria-hidden="true"></span>
-          </a>
-          <a href="https://vimeo.com/usantamaria" target="_blank">
-            <span class="icon fa fa-vimeo" aria-hidden="true"></span>
-          </a>
-          <a href="http://www.flickr.com/photos/utfsm/sets/" target="_blank">
-            <span class="icon fa fa-flickr" aria-hidden="true"></span>
-          </a>
-          <a href="https://instagram.com/usantamaria/" target="_blank">
-            <span class="icon fa fa-instagram" aria-hidden="true"></span>
-          </a>
+            <ul class="sponsors">
+              <li><a href="https://proversity.org/"><img src="${static.url('images/proversity.svg')}"></a></li>
+              <li><a href="${footer['openedx_link']['url']}"><img src="${static.url('images/openedx.svg')}"></a></li>
+            </ul>
+          </nav>
         </div>
-
-
-        <div class="wrapper-logo">
-          <p>
-            <a href="/">
-              ## The default logo is a placeholder.
-              ## You can either replace this link entirely or update
-              ## the FOOTER_ORGANIZATION_IMAGE in Django settings.
-              ## If you customize FOOTER_ORGANIZATION_IMAGE, then the image
-              ## can be included in the footer on other sites
-              ## (e.g. a blog or marketing front-end) to provide a consistent
-              ## user experience.  See the branding app for details.
-              <img alt="organization logo" src="${static.url('images/logo-footer.png')}">
-            </a>
-          </p>
+        <div class="col-md-3">
+          ## Please leave this link and use one of the logos provided
+          ## The OpenEdX link may be hidden when this view is served
+          ## through an API to partner sites (such as marketing sites or blogs),
+          ## which are not technically powered by Open edX.
+          % if not hide_openedx_link:
+            <div class="footer-about-openedx">
+              <p>
+                  <p>${_("Built by")} <a href="https://proversity.org/" target="_blank">Proversity</a> | ${_("Powered by")} <a href="${footer['openedx_link']['url']}" target="_blank">Open edX</a></p>
+              </p>
+            </div>
+          % endif
         </div>
-
-        ## Site operators: Please do not remove this paragraph! This attributes back to edX and makes your acknowledgement of edX's trademarks clear.
-        <p class="copyright">© Universidad Técnica Federico Santa María </p>
-        <p class="copyright">Avenida España 1680, Valparaíso · +56 32 2654000 · dgc@usm.cl</p>
-
-        <nav class="nav-legal" aria-label="${_('Legal')}">
-          <ul>
-            % for item_num, link in enumerate(footer['legal_links'], start=1):
-              <li class="nav-legal-0${item_num}">
-                <a href="${link['url']}">${link['title']}</a>
-              </li>
-            % endfor
-            <li><a href="${footer['edx_org_link']['url']}">${footer['edx_org_link']['text']}</a></li>
-          </ul>
-        </nav>
       </div>
-      ## Please leave this link and use one of the logos provided
-      ## The OpenEdX link may be hidden when this view is served
-      ## through an API to partner sites (such as marketing sites or blogs),
-      ## which are not technically powered by OpenEdX.
-      % if not hide_openedx_link:
-      <div class="footer-about-openedx">
-        <p>
-          <a href="${footer['openedx_link']['url']}">
-            <img src="${footer['openedx_link']['image']}" alt="${footer['openedx_link']['title']}" width="140" />
-          </a>
-        </p>
-        <p>
-          <a href="https://www.edunext.co">
-            <img src="https://d1uwn6yupg8lfo.cloudfront.net/edxsites/aegir-images/logo-small.png" width="140" />
-          </a>
-        </p>
-      </div>
-      % endif
     </footer>
-</div>
+  </div>
+% else:
+
+<footer class="footer" aria-label="${_("Page Footer")}"
+    ## When rendering the footer through the branding API,
+    ## the direction may not be set on the parent element,
+    ## so we set it here.
+    % if bidi:
+      dir=${bidi}
+    % endif
+  >
+  <div class="container">
+
+    % if configuration_helpers.get_value('FOOTER_ALIGNMENT', 'center') == 'center':
+      <div class="grid">
+        <div class="items">
+          <div>
+            <ul>
+              <li><a href="" target="_blank">${_("About")}</a></li>
+              <li><a href="" target="_blank">${_("Contact")}</a></li>
+              <li><a href="${marketing_link('HONOR')}" target="_blank">${_("Terms of Service and Honour Code")}</a></li>
+              <li><a href="${marketing_link('PRIVACY')}" target="_blank">${_("Privacy Policy")}</a></li>
+              <li><a href="${marketing_link('COOKIES')}" target="_blank">${_("Cookie Policy")}</a></li>
+            </ul>
+
+            <ul>
+              % if configuration_helpers.get_value('ENABLE_EXTEND_SIDEBAR_MENU', False):
+                % for menu_item in configuration_helpers.get_value('EXTENDED_MENU', []):
+                  <% display_name, url = menu_item.split(",") %>
+                  <li>
+                    <a href="${url}" target="blank">${_(display_name)}</a>
+                  </li>
+                % endfor
+              % endif
+            </ul>
+
+            <ul class="sponsors">
+              <li><a href="https://proversity.org/" target="_blank"><img src="${static.url('images/proversity.svg')}" /></a></li>
+              <li><a href="${footer['openedx_link']['url']}" target="_blank"><img src="${static.url('images/openedx.svg')}" /></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    % elif configuration_helpers.get_value('FOOTER_ALIGNMENT', 'center') == 'left':
+      <div class="grid double">
+        <div class="items">
+          <div>
+            <ul>
+              <li><a href="" target="_blank">${_("About")}</a></li>
+              <li><a href="" target="_blank">${_("Contact")}</a></li>
+              <li><a href="${marketing_link('HONOR')}" target="_blank">${_("Terms of Service and Honour Code")}</a></li>
+              <li><a href="${marketing_link('PRIVACY')}" target="_blank">${_("Privacy Policy")}</a></li>
+              <li><a href="${marketing_link('COOKIES')}" target="_blank">${_("Cookie Policy")}</a></li>
+            </ul>
+
+            <ul>
+              % if configuration_helpers.get_value('ENABLE_EXTEND_SIDEBAR_MENU', False):
+                % for menu_item in configuration_helpers.get_value('EXTENDED_MENU', []):
+                  <% display_name, url = menu_item.split(",") %>
+                  <li>
+                    <a href="${url}" target="blank">${_(display_name)}</a>
+                  </li>
+                % endfor
+              % endif
+            </ul>
+          </div>
+        </div>
+
+        <div class="items">
+          <div>
+            <ul class="sponsors">
+              <li><a href="https://proversity.org/" target="_blank"><img src="/static/BP/images/proversity.svg" /></a></li>
+              <li><a href="${footer['openedx_link']['url']}" target="_blank"><img src="/static/BP/images/openedx.svg" /></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    % elif configuration_helpers.get_value('FOOTER_ALIGNMENT', 'center') == 'right':
+      <div class="grid double reverse">
+        <div class="items">
+          <div>
+            <ul>
+              <li><a href="" target="_blank">${_("About")}</a></li>
+              <li><a href="" target="_blank">${_("Contact")}</a></li>
+              <li><a href="${marketing_link('HONOR')}" target="_blank">${_("Terms of Service and Honour Code")}</a></li>
+              <li><a href="${marketing_link('PRIVACY')}" target="_blank">${_("Privacy Policy")}</a></li>
+              <li><a href="${marketing_link('COOKIES')}" target="_blank">${_("Cookie Policy")}</a></li>
+            </ul>
+
+            <ul>
+              % if configuration_helpers.get_value('ENABLE_EXTEND_SIDEBAR_MENU', False):
+                % for menu_item in configuration_helpers.get_value('EXTENDED_MENU', []):
+                  <% display_name, url = menu_item.split(",") %>
+                  <li>
+                    <a href="${url}" target="blank">${_(display_name)}</a>
+                  </li>
+                % endfor
+              % endif
+            </ul>
+          </div>
+        </div>
+
+        <div class="items">
+          <div>
+            <ul class="sponsors">
+              <li><a href="https://proversity.org/" target="_blank"><img src="/static/BP/images/proversity.svg" /></a></li>
+              <li><a href="${footer['openedx_link']['url']}" target="_blank"><img src="/static/BP/images/openedx.svg" /></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    % endif
+
+  </div>
+</footer>
+
+% endif
+
 
 % if include_dependencies:
   <%static:js group='base_vendor'/>
@@ -123,3 +187,104 @@
     <link rel="stylesheet" type="text/css" href="${url}"></link>
   % endfor
 % endif
+
+<script>
+  // custom script
+</script>
+
+% if settings.FEATURES.get('ENABLE_COOKIE_CONSENT', False):
+<!-- Cookie Consent -->
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.1/cookieconsent.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.1/cookieconsent.min.js"></script>
+<script>
+  window.cookieconsent.initialise({
+    palette:{
+      popup: {background: "#323538", text: "#ffffff"},
+      button: {background: "#009900"},
+    },
+    theme: "classic"
+  });
+  $('.cc-window').css("font-family", $('body').css('fontFamily'));
+</script>
+% endif
+
+% if False:
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GOOGLE_TRACKING_ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'GOOGLE_TRACKING_ID');
+</script>
+% endif
+
+<% languages = released_languages() %>
+
+<script>
+  function setLanguage(data) {
+    $.ajax({
+      type: 'POST',
+      url: '/i18n/setlang/',
+      data: data,
+      dataType: 'html',
+      success: function() {
+        location.reload();
+      },
+      error: function() {}
+    });
+  }
+
+  function prefLanguage(data, setLangData) {
+    $.ajax({
+      type: 'PATCH',
+      url: '/lang_pref/session_language/',
+      data: JSON.stringify(data),
+      contentType: "application/json",
+      success: function() {
+        setLanguage(setLangData);
+      },
+      error: function() {}
+    });
+  }
+
+  function prefUserLanguage(data, setLangData) {
+    $.ajax({
+      type: 'PATCH',
+      url: '/api/user/v1/preferences/${user.username}' ,
+      data: JSON.stringify(data),
+      contentType: "application/merge-patch+json",
+      success: function() {
+        prefLanguage(data, setLangData);
+      },
+      error: function() {}
+    });
+  }
+
+  % for language in languages:
+    $( "#lang-${language[0]}" ).click(function(e) {
+      e.preventDefault()
+      var data = {
+        'pref-lang': '${language[0]}',
+        'csrfmiddlewaretoken': '${csrf_token}'
+      };
+
+      var setLangData = { 'language': '${language[0]}' };
+      % if user.is_authenticated():
+        prefUserLanguage(data, setLangData);
+      % else:
+        prefLanguage(data, setLangData);
+      % endif
+    });
+  % endfor
+
+  $(document).ready(function () {
+    var sideBarLanguageSelector = $("#sideBarLanguageSelector .selected a").text();
+    $("#sideBarSelectedLanguage").text(sideBarLanguageSelector);
+
+    var navBarLanguageSelector = $("#navBarLanguageSelector .selected a").text();
+    $("#navBarSelectedLanguage").text(navBarLanguageSelector);
+  })
+  
+</script>
