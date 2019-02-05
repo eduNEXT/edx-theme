@@ -1,4 +1,14 @@
+@import 'variables_theme';
 
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: UniversLTStd-Light, Arial, Helvetica, sans-serif;
+}
 //-----------------
 // Home Styling
 //-----------------
@@ -138,6 +148,15 @@
 
   .course-profile {
     padding-top: 50px;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    height: auto;
+
+    p {
+      text-align: center;
+      color: $black;
+    }
   }
 
   .waypoint {
@@ -152,10 +171,96 @@
     padding: 15px 0;
     margin: 15px 0;
     width: 100%;
+    text-align: center;
 
     li {
       display: inline;
     }
+  }
+
+  .course-video {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+    transition: all 0.3s;
+
+    img {
+      width: 100%;
+      display: block;
+      margin: 15px auto;
+    }
+  }
+
+  .link-courses {
+    color: $green;
+
+    &:hover {
+      color: $green-dark;
+    }
+  }
+
+  .container {
+    .btn-center {
+      text-align: center;
+      margin: 15px 0;
+
+      a {
+        color: $black;
+        border-color: $black;
+        background: $white;
+        border-radius: 30px;
+        padding: 0.7rem 3rem;
+      }
+    }
+
+    section {
+      padding: 15px 0;
+
+      h2 {
+        font-size: 1.8rem;
+        color: $green;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+        margin: 10px 0;      
+      }
+
+      p {
+        color: #909090;
+      }
+
+      .teacher-image img {
+        margin-right: 20px;
+        max-width: 100px;
+      }
+
+      .course-staff {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .teacher {
+        padding: 20px 0;
+      }
+    }
+  }
+}
+
+.btn-default {
+  background: $green;
+  color: #fff !important;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  transition: all 0.3s;
+
+  &:hover {
+    background: $green-dark;
   }
 }
 
