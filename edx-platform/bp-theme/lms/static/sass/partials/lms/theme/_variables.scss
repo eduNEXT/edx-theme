@@ -1,0 +1,14 @@
+$green: #007f00;
+// $green-dark: darken($green, 10%);
+$gray: #909090;
+$font-family-theme: UniversLTStd-Light, Arial, Helvetica, sans-serif;
+
+$primary: $green;
+$link-hover: #186a18;
+
+$monospace: $font-family-theme;
+$serif: $font-family-theme;
+$f-serif: $font-family-theme;
+$f-monospace: $font-family-theme;
+
+@import 'edx-bootstrap/sass/open-edx/theme';
