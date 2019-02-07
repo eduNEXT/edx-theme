@@ -2,42 +2,131 @@
 <%page expression_filter="h"/>
 <%namespace name='static' file='static_content.html'/>
 
+## This template should not use the target student's details when masquerading, see TNL-4895
+<%
+self.real_user = getattr(user, 'real_user', user)
+username = self.real_user.username
+profile_image_url = get_profile_image_urls_for_user(self.real_user)['medium']
+%>
+
 <%!
-from django.urls import reverse
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 
+from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 from openedx.core.djangoapps.user_api.accounts.image_helpers import get_profile_image_urls_for_user
-from openedx.core.djangoapps.user_api.accounts.utils import retrieve_last_sitewide_block_completed
-from openedx.features.enterprise_support.utils import get_enterprise_learner_generic_name
 %>
 
-<%
-## This template should not use the target student's details when masquerading, see TNL-4895
-self.real_user = getattr(user, 'real_user', user)
-profile_image_url = get_profile_image_urls_for_user(self.real_user)['medium']
-username = self.real_user.username
-resume_block = retrieve_last_sitewide_block_completed(username)
-displayname = get_enterprise_learner_generic_name(request) or username
-%>
+% if uses_bootstrap:
+    <ul>
+        <li>
+            <img class="user-image-frame" src="${profile_image_url}" alt="">
 
-<div class="nav-item hidden-mobile">
-    <a href="${reverse('dashboard')}" class="menu-title">
-        <img class="user-image-frame" src="${profile_image_url}" alt="">
-        <span class="sr-only">${_("Dashboard for:")}</span>
-        <span class="username">${displayname}</span>
-    </a>
-</div>
-<div class="nav-item hidden-mobile nav-item-dropdown" tabindex="-1">
-    <div class="toggle-user-dropdown" role="button" aria-label=${_("Options Menu")} aria-expanded="false" tabindex="0" aria-controls="user-menu">
-        <span class="fa fa-caret-down" aria-hidden="true"></span>
-    </div>
-    <div class="dropdown-user-menu hidden" aria-label=${_("More Options")} role="menu" id="user-menu" tabindex="-1">
-        % if resume_block:
-            <div class="mobile-nav-item dropdown-item dropdown-nav-item"><a href="${resume_block}" role="menuitem">${_("Resume your last course")}</a></div>
+            <h2>${username}</h2>
+        </li>
+        <li><a href="${reverse('dashboard')}">${_("Dashboard")}</a></li>
+        <li class="hidden-md"><a href="/courses">${_("Explore Courses")}</a></li>
+        % if not configuration_helpers.get_value('hide_login_screen', False):
+            <li><a href="${reverse('learner_profile', kwargs={'username': self.real_user.username})}">${_("Profile")}</a></li>
+            <li><a href="${reverse('account_settings')}">${_("Account")}</a></li>
         % endif
-        <div class="mobile-nav-item dropdown-item dropdown-nav-item"><a href="${reverse('dashboard')}" role="menuitem">${_("Dashboard")}</a></div>
-        <div class="mobile-nav-item dropdown-item dropdown-nav-item"><a href="${reverse('learner_profile', kwargs={'username': username})}" role="menuitem">${_("Profile")}</a></div>
-        <div class="mobile-nav-item dropdown-item dropdown-nav-item"><a href="${reverse('account_settings')}" role="menuitem">${_("Account")}</a></div>
-        <div class="mobile-nav-item dropdown-item dropdown-nav-item"><a href="${reverse('logout')}" role="menuitem">${_("Sign Out")}</a></div>
-    </div>
-</div>
+        % if settings.FEATURES.get('ENABLE_FEEDBACK_SUBMISSION', False):
+            <li><a href="#" data-toggle="modal" data-target="#supportModal">${_("Support")}</a></li>
+        % endif
+        <!-- <li><a href="${get_online_help_info(online_help_token)['doc_url']}" target="_blank">${_("Help")}</a></li> -->
+        % if configuration_helpers.get_value('ENABLE_EXTEND_SIDEBAR_MENU', False):
+            % for menu_item in configuration_helpers.get_value('EXTENDED_MENU', []):
+              <% display_name, url = menu_item.split(",") %>
+              <li>
+                <a href="${url}" target="blank">${_(display_name)}</a>
+              </li>
+            % endfor
+        % endif
+
+        % if false:
+            <li>
+                <form  method="post" action="${reverse('social:disconnect', kwargs={'backend':'-oauth2'})} ">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${ csrf_token }" />
+                    <button type="submit" style="background: none; border: none; padding: 15px; display: block; text-align: center; width: 100%;">${_("Sign Out")}</button>
+                </form>
+            </li>
+        % else:
+            <li><a href="${reverse('logout')}">${_("Sign Out")}</a></li>
+        % endif
+    </ul>
+% elif uses_pattern_library:
+    <ul>
+        <li>
+            <img class="user-image-frame" src="${profile_image_url}" alt="">
+
+            <h2>${username}</h2>
+        </li>
+        <li><a href="${reverse('dashboard')}">${_("Dashboard")}</a></li>
+        <li class="hidden-md"><a href="/courses">${_("Explore Courses")}</a></li>
+        % if not configuration_helpers.get_value('hide_login_screen', False):
+            <li><a href="${reverse('learner_profile', kwargs={'username': self.real_user.username})}">${_("Profile")}</a></li>
+            <li><a href="${reverse('account_settings')}">${_("Account")}</a></li>
+        % endif
+        % if settings.FEATURES.get('ENABLE_FEEDBACK_SUBMISSION', False):
+            <li><a href="#" data-toggle="modal" data-target="#supportModal">${_("Support")}</a></li>
+        % endif
+        <!-- <li><a href="${get_online_help_info(online_help_token)['doc_url']}" target="_blank">${_("Help")}</a></li> -->
+        % if configuration_helpers.get_value('ENABLE_EXTEND_SIDEBAR_MENU', False):
+            % for menu_item in configuration_helpers.get_value('EXTENDED_MENU', []):
+              <% display_name, url = menu_item.split(",") %>
+              <li>
+                <a href="${url}" target="blank">${_(display_name)}</a>
+              </li>
+            % endfor
+        % endif
+
+        % if false:
+            <li>
+                <form  method="post" action="${reverse('social:disconnect', kwargs={'backend':'-oauth2'})} ">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${ csrf_token }" />
+                    <button type="submit" style="background: none; border: none; padding: 15px; display: block; text-align: center; width: 100%;">${_("Sign Out")}</button>
+                </form>
+            </li>
+        % else:
+            <li><a href="${reverse('logout')}">${_("Sign Out")}</a></li>
+        % endif
+    </ul>
+% else:
+    <ul>
+        <li>
+            <img class="user-image-frame" src="${profile_image_url}" alt="">
+
+            <h2>${username}</h2>
+        </li>
+        <li><a href="${reverse('dashboard')}">${_("Dashboard")}</a></li>
+        <li class="hidden-md"><a href="/courses">${_("Explore Courses")}</a></li>
+        % if not configuration_helpers.get_value('hide_login_screen', False):
+            <li><a href="${reverse('learner_profile', kwargs={'username': self.real_user.username})}">${_("Profile")}</a></li>
+            <li><a href="${reverse('account_settings')}">${_("Account")}</a></li>
+        % endif
+        % if configuration_helpers.get_value('ENABLE_EXTEND_SIDEBAR_MENU', False):
+            % for menu_item in configuration_helpers.get_value('EXTENDED_MENU', []):
+              <% display_name, url = menu_item.split(",") %>
+              <li>
+                <a href="${url}" target="blank">${_(display_name)}</a>
+              </li>
+            % endfor
+        % endif
+        % if settings.FEATURES.get('ENABLE_FEEDBACK_SUBMISSION', False):
+            <li><a href="#" data-toggle="modal" data-target="#supportModal">${_("Support")}</a></li>
+        % endif
+        <li><a href="" target="_blank">${_("Contact")}</a></li>
+        <!-- <li><a href="${get_online_help_info(online_help_token)['doc_url']}" target="_blank">${_("Help")}</a></li> -->
+        % if false:
+            <li>
+                <form  method="post" action="${reverse('social:disconnect', kwargs={'backend':'-oauth2'})} ">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${ csrf_token }" />
+                    <button type="submit" style="background: none; border: none; padding: 15px; display: block; text-align: center; width: 100%;">${_("Sign Out")}</button>
+                </form>
+            </li>
+        % else:
+            <li><a href="${reverse('logout')}">${_("Sign Out")}</a></li>
+        % endif
+        
+    </ul>
+% endif
