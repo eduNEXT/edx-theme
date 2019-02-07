@@ -1,0 +1,59 @@
+## mako
+
+<%inherit file="/main.html" />
+<%namespace name='static' file='/static_content.html'/>
+<%!
+from django.utils.translation import ugettext as _
+%>
+
+<%block name="title"><title>${_("Cookie Policy")}</title></%block>
+
+<section role="legal" class="container about">
+  <p>${_("Klicken Sie hier für die deutsche Übersetzung")}</p>
+
+  <p>${_("Para Português Brasileiro clique aqui")}</p>
+
+  <p>${_("For NORSK, klikk her")}</p>
+
+  <p>${_("En español aquí")}</p>
+
+  <p>${_("For Portuguese (Portugal) click here / Para Português (Portugal) clique aqui")}</p>
+
+  <p>${_("For Dutch click here / Klik hier voor Nederlandse taal")}</p>
+
+  <p>${_("For French click here / Cliquez ici pour la version française")}</p>
+
+  <h3>${_("Cookies")}</h3>
+
+  <p>${_("We may place cookies on your PC (or equivalent) which log data about your visit. Cookies are small text files that are widely used to make sites work efficiently and to improve and tailor the visitor's user experience, as well as to provide information back to the site's operators. These can be "session cookies" (which are deleted when you close your browser) and/or "persistent cookies" (which remain on your computer for a longer period of time). The Cornerstone site uses cookies for:")}</p>
+
+  <lu>
+    <li>${_("Performance monitoring to ensure pages load quickly and consistently")}</li>
+    <li>${_("User authentication and session ID")}</li>
+    <li>${_("Time-out after periods of inactivity")}</li>
+    <li>${_("Selecting appropriate language options")}</li>
+    <li>${_("Enabling security features")}</li>
+    <li>${_("Click stream and site traffic analysis to better understand site usage")}</li>
+  </lu>
+
+  <p>${_("The majority of cookies do not identify the individual user, but only the computer that is being used to view the site")}</p>
+
+  <p>${_("By accessing this site, you are agreeing to our use of cookies for these purposes.")}</p>
+
+  <p>${_("To delete or stop cookies being placed on your computer, refer to the help menu on your internet browser. In a few cases, blocking cookies may reduce the functionality of some sites or prevent access to them depending on your chosen browser options. For further information on cookies, visit www.aboutcookies.org")}</p>
+</section>
+
+<script>
+  $(document).ready(function() {
+    $('#content section .container .row div button.print').click(function() {
+      window.print();
+      return false;
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    $("link[href*='/static/css/lms-main-v1']").remove();
+  });
+</script>
