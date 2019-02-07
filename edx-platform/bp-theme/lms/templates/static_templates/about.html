@@ -1,0 +1,18 @@
+<%page expression_filter="h"/>
+<%! from django.utils.translation import ugettext as _ 
+%>
+<%inherit file="../main.html" />
+
+<%block name="pagetitle">${_("About")}</%block>
+
+<main id="main" aria-label="Content" tabindex="-1">
+	<section class="container about">
+		<h2>${_("About The Hub")}</h2>
+
+		<p>${_("The Hub is BP\'s portal for sharing learning and best practice across the organisation. It supports the informal learning processes that already drive organisational learning at BP, and which take place outside formal context.")}</p>
+
+		<p>${_("Based on the concepts used by YouTube or Ted.com, The Hub allows learners to find answers and inspiration, choosing what they want to learn via bite sized peer-to-peer advice and expert experience in the form of video and other media. ")}</p>
+
+
+	</section>
+</main>

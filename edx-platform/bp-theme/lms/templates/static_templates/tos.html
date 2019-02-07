@@ -1,0 +1,30 @@
+## mako
+
+<%inherit file="/main.html" />
+<%namespace name='static' file='/static_content.html'/>
+<%!
+from django.utils.translation import ugettext as _
+%>
+
+<%block name="title"><title>${_("Terms of Service and Honor Code")}</title></%block>
+
+<section role="legal" class="container about">
+
+    <h2>${_("TERMS OF SERVICE")}</h2>
+
+</section>
+
+<script>
+  $(document).ready(function() {
+    $('#content section .container .row div button.print').click(function() {
+      window.print();
+      return false;
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    $("link[href*='/static/css/lms-main-v1']").remove();
+  });
+</script>

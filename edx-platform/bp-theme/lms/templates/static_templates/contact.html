@@ -1,0 +1,19 @@
+<%page expression_filter="h"/>
+<%! from django.utils.translation import ugettext as _ 
+%>
+<%inherit file="../main.html" />
+
+<%block name="pagetitle">${_("Contact")}</%block>
+
+<main id="main" aria-label="Content" tabindex="-1">
+    <section class="container about">
+    	<h2>${_("Contact Us")}</h2>
+
+    	<p>${_("We'd love to know what you are thinking! Please send us your feedback, as well as any comments, questions or suggestions you may have.")}</p>
+
+    	<p>${_("We will not pass your details to anyone else outside the BP Group without your permission. Please refer to our Privacy statement for further information.")}</p>
+
+    	<p>${_("Send an e-mail to ")}<a href="mailto:john.foster@bp.com">john.foster@bp.com</a></p>
+
+    </section>
+</main>

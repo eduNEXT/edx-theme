@@ -1,0 +1,69 @@
+## mako
+
+<%inherit file="/main.html" />
+<%namespace name='static' file='/static_content.html'/>
+<%!
+from django.utils.translation import ugettext as _
+%>
+
+<%block name="title"><title>${_("Privacy Policy")}</title></%block>
+
+<section role="legal" class="container about">
+    <h2>${_("Privacy ")}</h2>
+
+    <h3>${_("Information about our Intranet Site")}</h3>
+
+    <p>${_("BP International Limited is responsible for this intranet site, which is governed in accordance with the laws of England and Wales. The courts of England and Wales shall have exclusive jurisdiction over any dispute arising out of your use of it.")}</p>
+
+    <h3>${_("Collection, Use & Retention of Personal Information")}</h3>
+
+    <p>${_("If you submit personal information to us, you agree that other companies in the BP Group and third party service providers may process that information for the stated (or other reasonably foreseeable) purposes.")}</p> 
+
+    <p>${_("Bp\'s retention policies apply; although, we may process aggregated versions of your information from which you cannot be identified indefinitely.")}</p>
+
+    <h3>${_("Keeping Personal Information Accurate")}</h3>
+
+    <p>${_("If there are inaccuracies in, or updates to, your personal information or you otherwise wish to contact us in relation to this site, please contact us at ")}<a href="mailto:support.thehub@uk.bp.com">support.thehub@uk.bp.com</a></p>
+
+    <h3>${_("Security Disclosures and Transfers of Personal Information")}</h3>
+
+    <p>${_("BP does not sell or otherwise release your personal information to third parties to allow them to market to you.")}</p>
+
+    <p>${_("Since BP operates globally, we may transfer your data to countries other than this site\'s country of operation. However, BP\'s global Data Privacy Rules ensure that your personal information is treated in a uniform manner, irrespective of which BP Group entity processes it.")}</p>  
+
+    <p>${_("In accordance with our Data Privacy Rules, we reserve the right to disclose your personal information as required by law, or when we believe that disclosure is necessary to protect our rights and/or comply with a judicial proceeding, court order, request from a regulator or any other legal process served on us. In the event that BP is subject to a takeover, divestment or acquisition we may disclose your personal information to the new owner of the business.")}</p>
+
+    <h3>${_("Cookies")}</h3>
+
+    <p>${_("BP and its third party service providers may drop cookies on your PC (or equivalent) which log data about your visit. The information will be used for click stream and site traffic analysis to better understand site usage. For further information on cookies visit ")}<a target="blank" href="https://www.aboutcookies.org/">www.aboutcookies.org.</a></p>  
+
+    <p>${_("Cookies are small text files that are widely used to make sites work efficiently and to improve and tailor the visitor\'s user experience, as well as to provide information back to the site\'s operators. These can be \'session cookies\' (which are deleted when you close your browser) and/or \'persistent cookies\' (which remain on your computer for a longer period of time).   The majority of cookies do not identify the individual user, but only the computer that is being used to view the site. However, some cookies we use do capture NTID usernames in order to provide intranet site owners with further analytical information about their visitors.")}</p>  
+
+    <p>${_("To delete or stop cookies being placed on your computer refer to the help menu on your internet browser. In a few cases, blocking cookies may reduce the functionality of some sites or prevent access to them depending on your chosen browser options.")}</p>
+
+    <p>${_("By accessing this intranet site, you are agreeing to our use of cookies for these purposes.")}</p>
+
+    <h3>${_("Changes to This Privacy Statement")}</h3>
+
+    <p>${_("We review this privacy statement regularly and may modify it from time to time. We will place any updates on this page. By continuing to use this intranet site, after such changes have been made, you acknowledge and agree you have read, understood and accept the changes. This privacy statement was last updated on 17 April 2015.")}</p>
+
+    <h3>${_("Hyperlinks")}</h3>
+
+    <p>${_("Our intranet site may contain links to other sites which are outside our control and are not covered by this privacy statement. If you access other sites using the links provided, the operators of those sites may collect information from you which will be used by them in accordance with their privacy statement.")}</p>
+
+</section>
+
+<script>
+  $(document).ready(function() {
+    $('#content section .container .row div button.print').click(function() {
+      window.print();
+      return false;
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    $("link[href*='/static/css/lms-main-v1']").remove();
+  });
+</script>
