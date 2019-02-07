@@ -122,6 +122,10 @@ a:visited:not(.btn) {
       box-shadow: none;
       background: $green;
       border-color: $green;
+      cursor: pointer;
+      color: $white;
+      border-radius: 5px;
+      padding: 4px 20px;
 
       &:hover {
         border-color: $green;
@@ -170,9 +174,28 @@ a:visited:not(.btn) {
     li {
       color: $black;
     }
+  }
 
+  .user-image-frame {
+    display: block;
+    margin: 4px auto;
+    width: 15%;
+    border-radius: 50%;
   } 
+}
 
+.navbar-nav {
+  display: block;
+  padding: 0;
+  flex-direction: row;
+
+  &.nav {
+    flex-wrap: inherit;
+  }
+}
+
+.navbar > .container-fluid {
+  display: block;
 }
 
 .navbar-content {
@@ -568,7 +591,7 @@ a:visited:not(.btn) {
     }
   }
 
-	//Footer
+  //Footer
   .wrapper-footer.wrapper footer#footer-openedx {
     align-items: center;
     flex-direction: column;
