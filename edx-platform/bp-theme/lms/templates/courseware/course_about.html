@@ -118,7 +118,7 @@ from third_party_auth import provider, pipeline
         <div class="col-md-12">
           <h1 class="waypoint">${course.display_name_with_default_escaped}</h1>
 
-          <ul>
+          <ul class="header-info-list">
             <!-- <li>${_("Course Number")} ${course.display_number_with_default | h}</li> -->
 
             % if not course.start_date_is_still_default:
@@ -180,162 +180,64 @@ from third_party_auth import provider, pipeline
             %endif
           </ul>
 
-          %if user.is_authenticated() and registered:
-
-            %if show_courseware_link and user_is_active:
-              <a href="${course_target}" class="btn btn-lg btn-default">
-                ${_("View Course")}
-              </a>
-            %else:
-              </a>
-
-              <p>
-                %if user_is_active:
-                <b> ${_("course has not started yet")}
-                %else:
-                <b>${_("Activate Your {platform_name} Account").format(
-                    platform_name=configuration_helpers.get_value('PLATFORM_NAME', settings.PLATFORM_NAME
-                ))}</b>
-                %endif
-              </p>
-            %endif
-
-          %elif in_cart:
-
-            ${_('This course is in your <a href="{cart_link}">cart</a>.').format(cart_link=cart_link)}
-
-          %elif is_course_full:
-
-            ${_("Course is full")}
-
-          %elif invitation_only and not can_enroll:
-
-            <h4>${_("Enrolment in this course is by invitation only")}</h4>
-
-            ## Shib courses need the enrollment button to be displayed even when can_enroll is False,
-            ## because AnonymousUsers cause can_enroll for shib courses to be False, but we need them to be able to click
-            ## so that they can register and become a real user that can enroll.
-            %elif not is_shib_course and not can_enroll:
-
-            <h4>${_("Enrolment is closed")}</h4>
-
-          %elif needs_to_verify_age:
-
-            <script type="text/javascript" src="${static.url('js/bootstrap-modal.js')}"></script>
-            <script>
-              $(document).ready(function(){
-
-                var course_id = '${course.id}';
-
-
-                // Check if the user has verified their age on page load/reload, check localStorage and display proper register buttons
-
-                if (localStorage.getItem(course_id) === null) {
-                  $('.main-cta').prepend("<button class='verifyAge' type='button' id='modalButton' class='btn btn-primary btn-lg' data-toggle='modal' >${_('Enrol now')}</button>");
-
-                  // Bind functions to injected button
-                  $('#modalButton').on('click', function() {
-                    $('#ageModal').modal('show');
-                    $('#lean_overlay').fadeToggle()
-                  });
-                }
-
-                if (localStorage.getItem(course_id) != null) {
-                  var response = localStorage.getItem(course_id);
-
-                  var registerEnroll = function() {
-                    $("#class_enroll_form").submit();
-                    event.preventDefault();
-                  };
-
-                  var registerComplete = function(event, xhr) {
-                    if(xhr.status == 200) {
-                          if (xhr.responseText == "") {
-                            location.href = "${reverse('dashboard')}";
-                          }
-                          else {
-                            location.href = xhr.responseText;
-                          }
-                        } else if (xhr.status == 403) {
-                            location.href = "${reverse('register_user')}?course_id=${course.id | u}&enrollment_action=enroll";
-                        } else {
-                          $('#register_error').html(
-                              (xhr.responseText ? xhr.responseText : "${_("An error occurred. Please try again later.")}")
-                          ).css("display", "block");
-                        }
-                  }
-
-                  // if user has verified their age, allow them to enroll, otherwise display "Not old enough"
-                  if (response == 'yes') {
-                    $('.main-cta').prepend('<a href="#" class="register">${_("Enrol now")}</a>')
-                    // Submit the enroll form
-                    $(".register").on('click', function(event) {
-                      registerEnroll();
-                    });
-                    // Check status of enroll form submission
-                    $('#class_enroll_form').on('ajax:complete', registerComplete);
-                  } else {
-                    $('.main-cta').prepend('<span class="register disabled">${_("You are not old enough to enrol")}</span>');
-                  }
-                }
-              });
-            </script>
-
-          %elif not is_old_enough:
-
-            <p>${_("You are not old enough to enroll")}</p>
-
-          %elif can_add_course_to_cart:
-
-            <%
-            if user.is_authenticated():
-              reg_href = "#"
-              reg_element_id = "add_to_cart_post"
-            else:
-              reg_href = reg_then_add_to_cart_link
-              reg_element_id = "reg_then_add_to_cart"
-            %>
-            <% if ecommerce_checkout:
-                reg_href = ecommerce_checkout_link
-                reg_element_id = ""
-            %>
-            <a href="${reg_href}" class="add-to-cart" id="${reg_element_id}">
-              ${_("Add {course_name} to Cart <span>({price} USD)</span>")\
-                .format(course_name=course.display_number_with_default, price=course_price)}
+          <div class="main-cta">
+            %if user.is_authenticated and registered:
+          %if show_courseware_link:
+            <a href="${course_target}" class="btn-default">
+            <strong>${_("View Course")}</strong>
             </a>
-
-            <div id="register_error"></div>
-
-          %elif not user.is_authenticated() and configuration_helpers.get_value('hide_login_screen', False):
-
-               % if third_party_auth.is_enabled():
-
-                   % for enabled in provider.Registry.displayed_for_login():
-                       <button type="submit" class="btn btn-lg btn-default button-${enabled.provider_id} login-${enabled.provider_id}" onclick="thirdPartySignin(event, '${pipeline_url[enabled.provider_id]}');">
-                       ${_('Sign in or Sign up')}
-                       </button>
-                   % endfor
-
-               % endif
-
-          %else:
-
-            <%
-              if ecommerce_checkout:
-                reg_href = ecommerce_checkout_link
-              else:
-                reg_href="#"
-              if professional_mode:
-                href_class = "add-to-cart"
-              else:
-                href_class = "register"
-            %>
-            <a href="${reg_href}" class="${href_class} btn btn-lg btn-default">
-              ${_("Enrol now")}
-            </a>
-            <div id="register_error"></div>
-
           %endif
+
+        %elif in_cart:
+          <span class="add-to-cart">
+            ${_('This course is in your <a href="{cart_link}">cart</a>.').format(cart_link=cart_link)}
+          </span>
+        % elif is_course_full:
+          <span class="register disabled">
+            ${_("Course is full")}
+          </span>
+        % elif invitation_only and not can_enroll:
+          <span class="register disabled">${_("Enrollment in this course is by invitation only")}</span>
+        ## Shib courses need the enrollment button to be displayed even when can_enroll is False,
+        ## because AnonymousUsers cause can_enroll for shib courses to be False, but we need them to be able to click
+        ## so that they can register and become a real user that can enroll.
+        % elif not is_shib_course and not can_enroll:
+          <span class="register disabled">${_("Enrollment is Closed")}</span>
+        %elif can_add_course_to_cart:
+          <%
+          if user.is_authenticated:
+            reg_href = "#"
+            reg_element_id = "add_to_cart_post"
+          else:
+            reg_href = reg_then_add_to_cart_link
+            reg_element_id = "reg_then_add_to_cart"
+          %>
+          <% if ecommerce_checkout:
+              reg_href = ecommerce_checkout_link
+              reg_element_id = ""
+          %>
+          <a href="${reg_href}" class="add-to-cart" id="${reg_element_id}">
+            ${_("Add {course_name} to Cart <span>({price} USD)</span>")\
+              .format(course_name=course.display_number_with_default, price=course_price)}
+          </a>
+          <div id="register_error"></div>
+        %else:
+          <% 
+            if ecommerce_checkout:
+              reg_href = ecommerce_checkout_link
+            else:
+              reg_href="#"
+            if professional_mode:
+              href_class = "add-to-cart"
+            else:
+              href_class = "register"
+          %>
+          <a href="${reg_href}" class="${href_class} btn-default">
+            ${_('Enrol now')}
+          </a>
+          <div id="register_error"></div>
+        %endif
+          </div>
 
           <p><a class="link-courses" href="/courses">${_("Or explore other courses")}</a></p>
         </div>

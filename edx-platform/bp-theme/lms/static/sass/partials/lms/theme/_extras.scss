@@ -390,8 +390,14 @@ a:visited:not(.btn) {
 // About page Styling
 //-----------------
 .content-wrapper .course-info {
-  max-width: 1170px;
+  max-width: 1000px;
   margin: 0 auto;
+
+  p+p,
+  ul+p,
+  ol+p {
+    margin-top: 10px;
+  }
 
   .course-profile {
     padding-top: 50px;
@@ -411,7 +417,7 @@ a:visited:not(.btn) {
     font-size: 3em;
   }
 
-  ul {
+  .header-info-list {
     list-style-type: none;
     border-top: 1px solid $black;
     border-bottom: 1px solid $black;
@@ -422,6 +428,11 @@ a:visited:not(.btn) {
 
     li {
       display: inline;
+      margin-right: 20px;
+    }
+
+    li:last-child {
+      margin-right: 0;
     }
   }
 
@@ -476,13 +487,22 @@ a:visited:not(.btn) {
         margin: 10px 0;      
       }
 
-      p {
+      p,
+      ul li {
         color: $gray;
       }
 
+      ul li {
+        margin-bottom: 5px;
+      }
+
+      ul li:last-child {
+        margin-bottom: 0;
+      }
+
       .teacher-image img {
-        margin-right: 20px;
         max-width: 100px;
+        margin: 0 20px 10px;
       }
 
       .course-staff {
@@ -494,6 +514,11 @@ a:visited:not(.btn) {
         padding: 20px 0;
       }
     }
+  }
+
+  .main-cta {
+    text-align: center;
+    margin: 20px;
   }
 }
 
@@ -508,6 +533,27 @@ a:visited:not(.btn) {
 
   &:hover {
     background: $green;
+  }
+}
+
+
+//-----------------
+// Static pages Styling
+//-----------------
+.container.about {
+  h2 {
+    font-size: 1.8rem;
+    color: $green;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    margin: 10px 0;
+  }
+
+  p {
+    margin-top: 10px;
+    line-height: 1.2rem;
   }
 }
 
@@ -663,6 +709,12 @@ a:visited:not(.btn) {
 @media (min-width: 1200px) {
   .hidden-lg {
     display: none !important;
+  }
+}
+
+@media (max-width: 736px) {
+  .navbar-default .navbar-right {
+    float: right;
   }
 }
 
