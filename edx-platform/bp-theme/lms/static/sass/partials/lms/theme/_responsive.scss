@@ -1,0 +1,160 @@
+//-----------------
+// Responsive Styling
+//-----------------
+@media only screen and (max-width: 768px) {
+  .course-content .xmodule_display.xmodule_SequenceModule .sequence-nav {
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+    margin: 0 auto;
+
+    ol {
+      flex-wrap: wrap;
+
+      li {
+        border-left-style: solid;
+        border-right-style: solid;
+      }
+    }
+
+    .sequence-list-wrapper,
+    .sequence-nav-button.button-next,
+    .sequence-nav-button.button-previous {
+      flex: 0 0 100%;
+      max-width: 100%;
+      min-height: 44px;
+      z-index: 2000;
+    }
+
+    .sequence-nav-button.button-next,
+    .sequence-nav-button.button-previous {
+      margin: .75rem 0;
+    }
+  }
+
+  .content-wrapper .course-info {
+    .course-sidebar {
+      width: 100%;
+    }
+
+    header.course-profile .intro-inner-wrapper {
+      .table {
+        align-items: center;
+        display: flex;
+        flex-direction: column-reverse;
+      }
+
+      .intro {
+        text-align: center;
+        width: 100%;
+
+        .register {
+          margin: 0 auto;
+        }
+      }
+
+      .media {
+        width: auto;
+
+        img {
+          height: 160px;
+          max-width: 264px;
+        }
+      }
+    }
+  }
+
+  //Dashboard
+  .dashboard .main-container .my-courses .course .details .wrapper-course-image {
+    display: block;
+    width: 100%;
+
+    .cover {
+      max-width: 184px;
+    }
+
+    img {
+      height: 120px;
+    }
+  }
+
+  //Footer
+  .wrapper-footer.wrapper footer#footer-openedx {
+    align-items: center;
+    flex-direction: column;
+
+    .colophon {
+      align-items: center;
+      width: 100%;
+    }
+
+    .copyright {
+      text-align: center;
+    }
+
+    .footer-about-openedx {
+      align-items: center;
+      padding-top: 30px;
+    }
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .header-logo  {
+    .logo {
+      display: none;
+    }
+
+    .logo-mobile {
+      display: block;
+    }
+  }
+
+  .home>header .outer-wrapper {
+    float: none;
+    padding: 30px 10px;
+    width: auto;
+  }
+}
+
+@media (max-width: 767px){
+  .hidden-xs {
+    display: none !important;
+  }
+}
+
+
+@media (max-width: 1199px) and (min-width: 992px) {
+  .hidden-md {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-right {
+    float: right !important;
+    margin-right: -15px;
+  }
+
+  .navbar-nav>li {
+    float: left;
+  }
+}
+
+@media (max-width: 991px) and (min-width: 768px) {
+  .hidden-sm {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hidden-lg {
+    display: none !important;
+  }
+}
+
+@media (max-width: 736px) {
+  .navbar-default .navbar-right {
+    float: right;
+  }
+}
