@@ -8,6 +8,7 @@
 <%
 self.real_user = getattr(user, 'real_user', user)
 username = self.real_user.username
+link_on_header = True
 %>
 
 <%!
@@ -20,6 +21,12 @@ from openedx.core.djangoapps.site_configuration import helpers as configuration_
 from branding import api as branding_api
 from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_enabled, released_languages
 %>
+
+% if request.path  == "/courses":
+  <%
+  link_on_header = False
+  %>
+% endif
 
 % if False:
   <nav class="navbar navbar-default" style="background-image: url(${static.url('images/navigation.background.png')})">
@@ -75,42 +82,44 @@ from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_en
           <li class="brand-alt-right hidden-xs">
             <img src="${static.url('images/brand.alt.png')}" class="img-responsive" />
           </li>
-          % if user.is_authenticated():
 
-            % if settings.FEATURES.get('ENABLE_DASHBOARD_SEARCH'):
-              <li>
-                <form>
-                  <div class="search hidden-xs">
-                    <input type="text" id="searchCourses" placeholder="${_("Search your courses")}" />
+          % if link_on_header:
+            % if user.is_authenticated():
 
-                    <button class="search-button" type="submit">
-                      <i class="fa fa-search" aria-hidden="true"></i>
-                    </button>
-                  </div>
-                </form>
+              % if settings.FEATURES.get('ENABLE_DASHBOARD_SEARCH'):
+                <li>
+                  <form>
+                    <div class="search hidden-xs">
+                      <input type="text" id="searchCourses" placeholder="${_("Search your courses")}" />
 
-                % if settings.FEATURES.get('ENABLE_DASHBOARD_SEARCH'):
-                  <div id="dashboard-search-results" class="search-results dashboard-search-results"></div>
-                % endif
-              </li>
-            % endif
+                      <button class="search-button" type="submit">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </form>
 
-          % else:
+                  % if settings.FEATURES.get('ENABLE_DASHBOARD_SEARCH'):
+                    <div id="dashboard-search-results" class="search-results dashboard-search-results"></div>
+                  % endif
+                </li>
+              % endif
 
-            % if settings.FEATURES.get('ENABLE_COURSE_DISCOVERY'):
-              <li>
-                <form method="get" action="/courses">
-                  <div class="search hidden-xs">
-                    <input type="text" id="searchCourses" placeholder="${_("Search for a course")}" />
+            % else:
 
-                    <button class="search-button" type="submit">
-                      <i class="fa fa-search" aria-hidden="true"></i>
-                    </button>
-                  </div>
-                </form>
-              </li>
-            % endif
+              % if settings.FEATURES.get('ENABLE_COURSE_DISCOVERY'):
+                <li>
+                  <form method="get" action="/courses">
+                    <div class="search hidden-xs">
+                      <input type="text" id="searchCourses" placeholder="${_("Search for a course")}" />
 
+                      <button class="search-button" type="submit">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </form>
+                </li>
+              % endif
+            % endif  
           % endif
 
           % if user.is_authenticated():
@@ -119,9 +128,11 @@ from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_en
             </li>
           % endif
 
+          % if link_on_header:
           <li class="hidden-xs">
             <a href="/courses">${_("Explore Courses")}</a>
           </li>
+          % endif
 
           <li class="hidden-xs">
             % if header_language_selector_is_enabled():
