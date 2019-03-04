@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 {% load sekizai_tags i18n configuration theme_pipeline optional_include staticfiles %}
-{% load url from future %}
 <html lang="{{LANGUAGE_CODE}}">
 <head>
   <meta charset="UTF-8">
@@ -32,6 +31,8 @@
 </head>
 
 <body class="{% block bodyclass %}{% endblock %} lang_{{LANGUAGE_CODE}}" dir="${static.dir_rtl()}">
+  {% load render_bundle from webpack_loader %}
+  {% render_bundle "commons" %}
   <svg style="display: none">
   <symbol viewBox="0 0 35 35" id="ico-linkedin">
     <title>linkedin</title>
