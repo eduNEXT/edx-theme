@@ -387,3 +387,8 @@ a:visited:not(.btn) {
 .navbar-content .nav-register-link {
   display: none;
 }
+
+.home>header .outer-wrapper {
+  animation: none;
+  padding-top: 100px;
+}
