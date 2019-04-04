@@ -55,9 +55,6 @@ from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_en
                 </li>
               % endif
             </li>
-            <li class="brand-alt-left hidden-xs">
-              <img src="${static.url('images/brand.alt.png')}" class="img-responsive" />
-            </li>
           </ul>
           <ul class="nav navbar-nav hidden-lg hidden-md hidden-sm">
             % if False:
@@ -87,7 +84,7 @@ from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_en
             % if user.is_authenticated():
 
               % if settings.FEATURES.get('ENABLE_DASHBOARD_SEARCH'):
-                <li>
+                <li class="navbar-search">
                   <form>
                     <div class="search hidden-xs">
                       <input type="text" id="searchCourses" placeholder="${_("Search your courses")}" />
@@ -107,7 +104,7 @@ from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_en
             % else:
 
               % if settings.FEATURES.get('ENABLE_COURSE_DISCOVERY'):
-                <li>
+                <li class="navbar-search">
                   <form method="get" action="/courses">
                     <div class="search hidden-xs">
                       <input type="text" id="searchCourses" placeholder="${_("Search for a course")}" />
@@ -129,7 +126,7 @@ from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_en
           % endif
 
           % if link_on_header:
-          <li class="hidden-xs">
+          <li class="hidden-xs courses-link-navbar">
             <a href="/courses">${_("Explore Courses")}</a>
           </li>
           % endif

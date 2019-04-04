@@ -390,5 +390,20 @@ a:visited:not(.btn) {
 
 .home>header .outer-wrapper {
   animation: none;
-  padding-top: 100px;
+}
+
+.content-wrapper .courses-container .courses .course .course-image .cover-image::before {
+  background: transparent;
+}
+
+.navbar-default .navbar-nav .navbar-search {
+  padding-right: 60px;
+}
+
+.navbar-default .navbar-nav .courses-link-navbar {
+  padding-right: 25px;
+}
+
+.window-wrap .container > div {
+  border: none;
 }
