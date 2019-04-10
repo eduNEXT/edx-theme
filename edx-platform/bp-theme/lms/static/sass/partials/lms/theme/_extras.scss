@@ -390,5 +390,27 @@ a:visited:not(.btn) {
 
 .home>header .outer-wrapper {
   animation: none;
-  padding-top: 100px;
+}
+
+.content-wrapper .courses-container .courses .course .course-image .cover-image::before {
+  background: transparent;
+}
+
+.window-wrap .container > div {
+  border: none;
+}
+
+.banner-home::before {
+  content: '';
+  background-color: rgba(69, 68, 70, 0.4);
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.banner-home {
+  position: relative;
 }
